@@ -36,8 +36,10 @@ struct ContentView: View {
                     Button("Add Person", systemImage: "plus", action: addPerson)
                 }
                 .searchable(text: $searchText)
+                .preferredColorScheme(.dark)
         }
     }
+    
     
     func addPerson() {
         let person = Person(name: "")

@@ -10,12 +10,16 @@ import SwiftData
 import SwiftUI
 
 struct EditPersonView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Bindable var person: Person
     @Binding var navigationPath: NavigationPath
     @State private var selectedItem: PhotosPickerItem?
     
     @State private var isPromptPresented = false
+    
+    @State private var isMapViewPresented = false
+    
     
     var body: some View {
         Form {
@@ -24,7 +28,7 @@ struct EditPersonView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
-                        
+                    
                 }
                 
                 PhotosPicker(selection: $selectedItem, matching: .images) {
@@ -50,11 +54,24 @@ struct EditPersonView: View {
                     .textContentType(.name)
             }
             
+            Button("Save your location") {
+                isMapViewPresented = true
+            }
+            .sheet(isPresented: $isMapViewPresented) {
+                MapView()
+            }
+            
         }
         .navigationTitle("Edit Person")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: selectedItem) {
             loadPhoto()
+        }
+        .toolbar {
+            Button("Save"){
+                dismiss()
+            }
+            .disabled(person.name.isEmpty || selectedItem == nil)
         }
     }
     

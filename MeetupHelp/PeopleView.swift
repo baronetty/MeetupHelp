@@ -19,9 +19,8 @@ struct PeopleView: View {
                     if let imageData = person.photo, let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .scaledToFit()
                             .frame(width: 50, height: 50)
-                            .padding()
+                            .clipShape(Circle())
                     }
                     
                     Text(person.name)
